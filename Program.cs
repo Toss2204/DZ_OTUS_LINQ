@@ -34,9 +34,17 @@ namespace DZ_OTUS_LINQ
             {
                 Console.WriteLine(i);
             }
+
+            Console.WriteLine();
+            Console.WriteLine(new string('-', Console.WindowWidth));
+            var list3 = new List<Person> { new Person(20), new Person(18), new Person(40), new Person(35), new Person(28), new Person(69), new Person(4), new Person(80), new Person(28), new Person(15) };
+
+            var res3 = list3.Top(30, person => person.Age);
+            foreach (Person i in res3)
+            {
+                Console.WriteLine(i.Age);
+            }
             
-
-
         }
     }
 
@@ -93,5 +101,38 @@ namespace DZ_OTUS_LINQ
 
             return orderedCol.Take(totalCountForReturn);
         }
+
+
+        public static IEnumerable<T> Top<T>(this IEnumerable<T> collection, int percent, Func<Person, int> attributeForSort)
+        {
+            
+            
+            if (percent < 1 || percent > 100)
+            {
+                throw new ArgumentException("Не может выходить за границы интервала от 1 до 100");
+            }
+
+
+            decimal countForReturn = (decimal)collection.Count() * percent / 100;
+
+            decimal celPart = Math.Truncate(countForReturn);
+
+            int totalCountForReturn;
+
+            if (countForReturn % celPart == 0)
+            {
+                totalCountForReturn = Decimal.ToInt32(celPart);
+            }
+            else
+            {
+                totalCountForReturn = Decimal.ToInt32(celPart + 1);
+
+            }
+
+            var orderedCol = collection.OrderByDescending( n => attributeForSort); //не знаю как правильно тут написать. Хочется вот так n=>n.attributeForSort  но видимо, я не правильно понимаю, что в attributeForSort он возвращает. 
+
+            return orderedCol.Take(totalCountForReturn);
+        }
+
     }
 }
