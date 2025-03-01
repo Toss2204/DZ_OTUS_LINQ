@@ -103,7 +103,7 @@ namespace DZ_OTUS_LINQ
         }
 
 
-        public static IEnumerable<T> Top<T>(this IEnumerable<T> collection, int percent, Func<Person, int> attributeForSort)
+        public static IEnumerable<T> Top<T,S>(this IEnumerable<T> collection, int percent, Func<T, S> attributeForSort)
         {
             
             
@@ -129,7 +129,7 @@ namespace DZ_OTUS_LINQ
 
             }
 
-            var orderedCol = collection.OrderByDescending( n => attributeForSort); //не знаю как правильно тут написать. Хочется вот так n=>n.attributeForSort  но видимо, я не правильно понимаю, что в attributeForSort он возвращает. 
+            var orderedCol = collection.OrderByDescending(attributeForSort); 
 
             return orderedCol.Take(totalCountForReturn);
         }
